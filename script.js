@@ -1,10 +1,7 @@
 const searchSong = () => {
     const searchText = document.getElementById("search-field").value;
-    const url = `http://api.lyrics.ovh/suggest/${searchText}`;
-    let b = "s";
-    var position = 4;
-    var output = [url.slice(0, position), b, url.slice(position)].join('');
-    fetch(output)
+    const url = `https://api.lyrics.ovh/suggest/${searchText}`;
+    fetch(url)
     .then(response => response.json())
     .then(data => displaySongs(data.data))
     .catch(error => displayError("Something went wrong! Please try again later!"));
