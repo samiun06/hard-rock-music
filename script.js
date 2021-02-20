@@ -1,13 +1,13 @@
 const searchSong = () => {
     const searchText = document.getElementById("search-field").value;
     const url = `https://api.lyrics.ovh/suggest/${searchText}`;
+    toggleSpinner();
     fetch(url)
     .then(response => response.json())
     .then(data => displaySongs(data.data))
     .catch(error => displayError("Something went wrong! Please try again later!"));
     document.getElementById("search-field").value = "";
 }
-
 const displaySongs = songs => {
     const songContainer = document.getElementById("song-container")
     const songLyrics = document.getElementById("song-lyrics")
@@ -29,13 +29,16 @@ const displaySongs = songs => {
             </div>
         `;
         songContainer.appendChild(songDiv);
+        toggleSpinner();
     });
 }
 const getLyric = async (artist, title) => {
+    toggleSpinner();
     const url = `https://api.lyrics.ovh/v1/${artist}/${title}`;
     const response = await fetch(url);
     const data = await response.json();
     displayLyrics(data.lyrics);
+    toggleSpinner();   
 }
 
 const displayLyrics = lyrics => {
@@ -47,3 +50,15 @@ const displayError = error => {
     const errorTag = document.getElementById("error-message");
     errorTag.innerText = error;
 }
+
+const toggleSpinner = () => {
+    const spinner = document.getElementById("loading");
+    spinner.classList.toggle("d-none");
+}
+
+document.getElementById("search-field").addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.key === "Enter") {
+        document.getElementById("Search").click();
+    }
+});
